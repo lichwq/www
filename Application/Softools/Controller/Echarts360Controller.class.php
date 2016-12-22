@@ -24,7 +24,7 @@ class Echarts360Controller extends Controller
     // ft : 是否过滤骂人的词汇
     // lc : 语言设置
     // text : 发送信息
-    $url = 'http://sandbox.api.simsimi.com/request.p?key=df3c679b-f20a-4bdc-9592-c8730169fa32&ft=0.0&lc=ch&text='.$msg;
+    $url = 'http://sandbox.api.simsimi.com/request.p?key=b376670e-6f2d-437a-8b0f-33678b97a320&ft=0.0&lc=ch&text='.$msg;
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch,CURLOPT_HEADER,0);

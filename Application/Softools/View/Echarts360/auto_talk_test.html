@@ -2,7 +2,7 @@
 <html lang="en" style="height: 100%">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>Simsimi</title>
+    <title>聊天测试</title>
     <link rel="stylesheet" href="/Public/jquery-ui.css">
     <script src="/Public/jquery-1.12.0.js"></script>
     <script src="/Public/jquery-ui.js"></script>
@@ -20,11 +20,11 @@
     </style>
 </head>
 <body>
-<div id="body">
+<div style="margin-left: auto;margin-right: auto;margin-top: 10%" id="body">
     <div id="talkbox">
 
     </div>
-    <div id="input">
+    <div  id="input">
         <input id="in" type="text" />
         <button id="send" onclick="send()">发送</button>
     </div>
@@ -44,7 +44,7 @@
         }
         $('#in').val('');    //点击发送后清除表单中的值
         d = $("#talkbox");
-        ele = '<div class="left"><div class="pic"><img src="./mi.png" width="40" height="40" /></div><div class="msg">你：'+msg+'</div></div>';
+        ele = '<div  class="left"><div class="pic"><img src="/Public/mi.png" width="40" height="40" /></div><div class="msg">你：'+msg+'</div></div>';
         var simsimi = '';
         d.append(ele);        //将输入框中的值放入聊天框
         $.get("__URL__/autotalk",{text:msg},function(data){    //将要发的信息ajax提交到php页面
