@@ -1,10 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Simsimi</title>
-    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" href="/Public/jquery-ui.css">
+    <script src="/Public/jquery-1.12.0.js"></script>
+    <script src="/Public/jquery-ui.js"></script>
     <style type="text/css">
         * {margin:0px;padding:0px;}
         #body {width:500px;}
@@ -35,7 +36,7 @@
         if (code == 13) {
             send();
         }
-    }
+    };
     function send(){
         msg = $("#in").val();    //获得输入框中的值
         if(!msg){
