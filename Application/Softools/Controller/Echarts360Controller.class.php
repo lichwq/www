@@ -15,6 +15,28 @@ class Echarts360Controller extends Controller
         #你好啊
     }
 
+
+    public function autotalk()
+    {
+    $msg = $_GET['text'];
+    //URL中的参数：
+    // sandbox.api.simsimi.com/request.p 是试用账号的API
+    // key : 用户秘钥，这里是试用秘钥100次请求/天
+    // ft : 是否过滤骂人的词汇
+    // lc : 语言设置
+    // text : 发送信息
+    $url = 'http://sandbox.api.simsimi.com/request.p?key=df3c679b-f20a-4bdc-9592-c8730169fa32&ft=0.0&lc=ch&text='.$msg;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch,CURLOPT_HEADER,0);
+    curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows NT 5.1; rv:12.0) Gecko/20120101 Firefox/17.0');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_BINARYTRANSFER, true) ;
+    $res = curl_exec($ch);
+    curl_close($ch);
+    echo $res;
+    }
+
     public function json_test_seek(){
         header('Content-Type:text/html; charset=utf-8');
         for($ff=79;$ff<=99;$ff++) {

@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Simsimi</title>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <style type="text/css">
+        * {margin:0px;padding:0px;}
+        #body {width:500px;}
+        #talkbox {border:1px olive solid; width:500px; min-height:100px; float:left; padding:10px;}
+        #input {float:right; margin-top:20px}
+        #in {height:24px; width:300px}
+        #send {background:rgb(51,153,255); border:0; border-radius:5px; height:24px; width:60px; color:white; font-size:14px; font-family:微软雅黑;}
+        .left {float:left; clear:both}
+        .right {float:right; clear:both}
+        .msg {min-height:30px; max-width:300px; line-height:30px; margin-left:20px; margin-bottom:10px; border-radius:6px; border:1px solid #383838; padding:5px; float:left}
+        .pic {min-height:40px; width:40px; border:0;float:left}
+    </style>
+</head>
+<body>
+<div id="body">
+    <div id="talkbox">
+
+    </div>
+    <div id="input">
+        <input id="in" type="text" />
+        <button id="send" onclick="send()">发送</button>
+    </div>
+</div>
+<script>
+    document.onkeydown = function (e) {     //回车发送信息
+        var theEvent = window.event || e;
+        var code = theEvent.keyCode || theEvent.which;
+        if (code == 13) {
+            send();
+        }
+    }
+    function send(){
+        msg = $("#in").val();    //获得输入框中的值
+        if(!msg){
+            return false;
+        }
+        $('#in').val('');    //点击发送后清除表单中的值
+        d = $("#talkbox");
+        ele = '<div class="left"><div class="pic"><img src="./mi.png" width="40" height="40" /></div><div class="msg">你：'+msg+'</div></div>';
+        var simsimi = '';
+        d.append(ele);        //将输入框中的值放入聊天框
+        $.get("./request.php",{text:msg},function(data){    //将要发的信息ajax提交到php页面
+            var obj = eval('('+data+')');            //php段请求接口，返回来json数据 obj.response是小黄鸡回复的
+            if(obj.result != 100){
+                alert('运行错误');
+            }else{
+                simsimi = '<div class="right"><div class="pic"><img src="./sim.png" width="40" height="40" /></div><div class="msg">小黄鸡：'+obj.response+'</div></div>';
+                d.append(simsimi);
+            }
+        })
+    }
+</script>
+</body>
+</html>
