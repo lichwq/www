@@ -46,7 +46,7 @@
         ele = '<div class="left"><div class="pic"><img src="./mi.png" width="40" height="40" /></div><div class="msg">你：'+msg+'</div></div>';
         var simsimi = '';
         d.append(ele);        //将输入框中的值放入聊天框
-        $.get("./request.php",{text:msg},function(data){    //将要发的信息ajax提交到php页面
+        $.get("__URL__/autotalk",{text:msg},function(data){    //将要发的信息ajax提交到php页面
             var obj = eval('('+data+')');            //php段请求接口，返回来json数据 obj.response是小黄鸡回复的
             if(obj.result != 100){
                 alert('运行错误');

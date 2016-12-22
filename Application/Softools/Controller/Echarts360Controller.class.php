@@ -15,7 +15,6 @@ class Echarts360Controller extends Controller
         #你好啊
     }
 
-
     public function autotalk()
     {
     $msg = $_GET['text'];
@@ -327,12 +326,6 @@ class Echarts360Controller extends Controller
         fclose($fh);
         fclose($kh);
     }
-
-
-
-
-
-
 
 
     public function longpoll_test()
