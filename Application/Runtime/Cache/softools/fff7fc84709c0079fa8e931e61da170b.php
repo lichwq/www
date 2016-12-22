@@ -1,0 +1,157 @@
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="/Public/loading.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3c0e5fed39c5e64f6effefa1e1f54e0a"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script src="/Public/jquery-1.12.0.js"></script>
+    <script src="/Public/jquery-ui.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+    <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/data/points-sample-data.js"></script>
+    <title>三级人群_波士顿(日)</title>
+    <script src="/Public/echarts.min.js"></script>
+    <style type="text/css">
+        html
+        {
+            height:100%;
+            margin:0;
+        }
+        body
+        {
+            height:100%;
+            margin:0;
+        }
+    </style>
+
+    <script>
+        $(function () {
+            function getQueryString(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                var r = window.location.search.substr(1).match(reg);
+                if ( encodeURI(r) != null) return unescape(encodeURI(r[2])); return null;
+            }
+
+            var _key = decodeURI(getQueryString("keywords"));
+
+            var _width = Number(decodeURI(getQueryString("width")));
+
+            var _height = Number(decodeURI(getQueryString("height")));
+
+            var _type = decodeURI(getQueryString("type"));
+
+            var _typename = decodeURI(getQueryString("typename"));
+
+            var _levname = decodeURI(getQueryString("levname"));
+
+            var _interval = Number(decodeURI(getQueryString("interval")));
+
+            var cccc = 'width: '+_width+'%;height: '+_height+'%';
+
+            $('#main_1').attr('style',cccc );
+
+            var myChart = echarts.init(document.getElementById('main_1'));
+            myChart.showLoading();
+
+
+            $.get('/Subscribe/three_lev_people_bos_port', {keywords: _key,type: _type,levname: _levname,typename: _typename}).done(function (result) {
+
+
+                        var sss = ['triangle', 'diamond', 'pin', 'arrow'];
+
+
+                        for(var i=0;i<result['data'].length;i++) {
+                            result['data'][i]['symbolSize'] = function (data) {
+                                return  data[2]*30/data[4];
+                            };
+                            result['data'][i]['label'] = {normal: {
+                                show: true,
+                                formatter: function (param) {
+                                    return param.data[3];
+                                },
+                                position: 'top'
+                            }};
+                        }
+
+
+          var  option = {
+                title: {
+                    text :_key+_levname+_typename,
+                    show : true
+                },
+                tooltip: {
+                        formatter : function (param) {
+                            return  '频率: ' + param.data[2];
+                        }
+                },
+                legend: {
+                    left: '20%',
+                    right: '4%',
+                    data: result['tagname'],
+                    containLabel: true
+                },
+//                toolbox: {
+//                    feature: {
+//                        saveAsImage: {}
+//                    }
+//                },
+                xAxis: result['x'],
+                yAxis: result['y'],
+                series: result['data'],
+                  symbolSize: function (data) {
+                  return (data[2]);
+              }
+          };
+                        myChart.on('click', function (params) {
+
+                            king_tag = params['seriesName'];
+
+
+                            $('#king_iframe').attr("src",'http://softools.richest007.com/subscribe/three_lev_people_bos_map?tagname='+king_tag+'&typename='+_levname);
+
+
+                            $('#myModal').modal('show');
+
+//                            console.log(params);
+                            console.log(params['seriesName']);
+//                            alert(params['seriesName']);
+                        });
+
+
+                        myChart.hideLoading();
+                myChart.setOption(option);
+            }
+            );
+        });
+
+    </script>
+
+</head>
+<body>
+
+<div id="main_1"></div>
+
+<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">三级人群地图</h4>
+            </div>
+            <form role="form" novalidate="" class="ng-pristine ng-invalid ng-invalid-required">
+                <div class="modal-body">
+                    <iframe id="king_iframe" frameborder="0" width="100%" height="500px"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+</body>
+</html>

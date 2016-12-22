@@ -1,0 +1,1 @@
+a:2:{i:0;s:6:"status";s:5:"_type";a:1:{s:6:"status";s:12:"varchar(255)";}}

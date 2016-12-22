@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <script src="//code.jquery.com/jquery-1.12.0.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/weui/0.4.0/style/weui.css">
+    <title>兑换记录</title>
+</head>
+<body>
+<div class="weui_cells_title">您的兑换记录</div>
+<div class="weui_cells">
+
+    <volist id="vo" name="rs">
+    <div class="weui_cell">
+
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>{$vo.giftname}<br></p>
+        </div>
+        <div class="weui_cell_ft">
+            {$vo.createdat}<br>
+        </div>
+
+    </div>
+    </volist>
+</div>
+
+</body>
+</html>

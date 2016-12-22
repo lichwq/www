@@ -1,0 +1,193 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; }
+
+body {
+    padding: 0;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-color: #eee;
+    overflow: hidden; }
+
+a {
+    color: #00B7FF; }
+
+.red_bg {
+    background-color: red; }
+
+.navbar-default .navbar-nav > li > a:link, .navbar-default .navbar-nav > li > a:visited, .navbar-default .navbar-nav > li > a:active {
+    color: #fff; }
+
+.errorForm {
+    margin: 0 -15px; }
+.errorForm .bg-danger {
+    padding: 10px 0px; }
+
+.loginPane {
+    margin-top: 30px; }
+
+.portrait {
+    margin-top: 12px; }
+
+.noBorderRadius {
+    border-radius: 0; }
+
+.socNavBg {
+    background-color: #333;
+    color: #fff;
+    border-color: #333;
+    margin-bottom: 0; }
+.socNavBg a.navbar-brand, .socNavBg .navbar-nav > li > a {
+    color: #fff; }
+.socNavBg .navbar-nav > li > a:hover {
+    color: aquamarine; }
+
+.buildResult {
+    position: absolute;
+    top: 180px;
+    left: 8%;
+    width: 84%;
+    height: 240px;
+    overflow-y: scroll;
+    background-color: azure;
+    border: 1px solid #999; }
+.buildResult ul {
+    list-style: none;
+    padding: 0;
+    margin: 0; }
+.buildResult ul li {
+    line-height: 34px;
+    text-indent: 1em;
+    color: #666; }
+.buildResult ul li:hover {
+    background-color: aquamarine; }
+
+.appMain {
+    height: 100%;
+    overflow: hidden; }
+.appMain > .row {
+    height: 100%; }
+.appMain > .row .left-menu {
+    padding: 0;
+    height: 100%; }
+.appMain > .row .left-menu > .ng-scope {
+    height: 100%; }
+.appMain > .row .left-menu > .ng-scope ul.menu {
+    height: 100%;
+    background-color: #444;
+    color: #fff; }
+.appMain > .row .left-menu > .ng-scope ul.menu .list-group-item {
+    background-color: #444;
+    color: #fff;
+    border: transparent; }
+.appMain > .row .left-menu > .ng-scope ul.menu .list-group-item:hover, .appMain > .row .left-menu > .ng-scope ul.menu .list-group-item.active {
+    background-color: darkcyan;
+    color: #333; }
+.appMain > .row .left-menu > .ng-scope ul.menu .list-group-item a {
+    color: #fff; }
+.appMain > .row .left-menu > .ng-scope ul.menu .list-group-item:hover a, .appMain > .row .left-menu > .ng-scope ul.menu .list-group-item.active a {
+    color: beige;
+    text-decoration: none; }
+.appMain > .row .left-menu > .ng-scope .list-group-item:last-child, .appMain > .row .left-menu > .ng-scope .list-group-item:first-child {
+    border-radius: 0; }
+.appMain > .row .main {
+    height: 100%;
+    overflow: hidden; }
+.appMain > .row .main > .ng-scope {
+    width: 100%;
+    height: auto;
+    overflow: hidden; }
+.appMain > .row .main > .ng-scope .keywordsList {
+    height: 250px;
+    overflow-y: scroll; }
+.appMain > .row .main > .ng-scope .keywordsListed {
+    height: 320px;
+    overflow-y: scroll; }
+
+.chartDiv .chart {
+    width: 100%;
+    height: 300px; }
+
+.chartDiv.roseChart .chart, .chartDiv.dashboardAll .chart {
+    width: 100%;
+    height: 450px; }
+
+#map {
+    width: 100%;
+    height: 700px; }
+
+.glyphicon-icon-loding {
+    -webkit-animation-name: rotate360;
+    animation-name: rotate360;
+    -webkit-animation-duration: 1.5s;
+    animation-duration: 1.5s;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite; }
+
+.chartPane {
+    width: 100%;
+    height: auto; }
+
+.glyphicon.red {
+    color: red; }
+
+.glyphicon.green {
+    color: green; }
+
+.cursorTd {
+    cursor: pointer; }
+
+#userList .glyphicon:hover {
+    color: red; }
+
+.isloginPanel {
+    display: none; }
+
+#wrapper {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    top: 0;
+    bottom: 30px;
+    left: 0;
+    overflow: hidden; }
+
+#scroller {
+    position: absolute;
+    z-index: 1;
+    -webkit-tap-highlight-color: transparent;
+    width: 100%;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    -o-text-size-adjust: none;
+    text-size-adjust: none;
+    padding-bottom: 20px; }
+#scroller .panel {
+    margin-left: 15px;
+    margin-right: 15px; }
+
+@-webkit-keyframes rotate360 {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg); }
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg); } }
+
+@keyframes rotate360 {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg); }
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg); } }

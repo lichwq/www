@@ -1,0 +1,35 @@
+<html>
+<head>
+    <script type="text/javascript" src="/public/Jquery/jquery.js"></script>
+    <script type="text/javascript">
+        $(function(){
+
+//            $('.btn').click(function(){
+//                $.get('__URL__/add').done(function(response) {
+//                    $('#mess').show();
+//                    $('#mess').text(response);
+//                }).fail(function(response) {
+//
+//                });
+//            })
+            var times = 0;
+            var timer = setInterval(function() {
+//                $.get('__URL__/mapapi');
+                $.get('__URL__/add').done(function(score) {
+                    $('#mess').show();
+                    $('#mess').text(score[0]['count(*)']);
+                    if(times == 5) {
+                        clearInterval(timer);
+                    }
+                    times++;
+                });
+            },1000);
+        })
+    </script>
+</head>
+<body>
+
+<div style="display:block; color:#ff0d21;" id="mess">欢迎来到上富工具集合</div>
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+a:6:{i:0;s:9:"productor";i:1;s:7:"project";i:2;s:7:"product";i:3;s:7:"isowner";i:4;s:8:"biaoqian";s:5:"_type";a:5:{s:9:"productor";s:12:"varchar(255)";s:7:"project";s:12:"varchar(255)";s:7:"product";s:12:"varchar(255)";s:7:"isowner";s:12:"varchar(255)";s:8:"biaoqian";s:12:"varchar(255)";}}

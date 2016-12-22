@@ -1,0 +1,1 @@
+a:3:{i:0;s:7:"project";i:1;s:7:"product";s:5:"_type";a:2:{s:7:"project";s:12:"varchar(255)";s:7:"product";s:12:"varchar(255)";}}

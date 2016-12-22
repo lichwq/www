@@ -1,0 +1,14 @@
+{
+"nodes": [
+{"name":"王强","value":"0"},
+{"name":"熊泓云","value":"1"},
+{"name":"张晨","value":"2"},
+{"name":"李舜","value":"3"}
+],
+"links":[
+{"source":"王强","target":"熊泓云","value":"0"},
+{"source":"王强","target":"张晨","value":"0"},
+{"source":"李舜","target":"王强","value":"0"}
+],
+"legend":["王强","熊泓云","张晨","李舜"]
+}

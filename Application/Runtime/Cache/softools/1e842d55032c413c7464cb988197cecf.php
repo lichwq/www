@@ -1,0 +1,340 @@
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>地图权限配置</title>
+    <link rel="stylesheet" href="/Public/jquery-ui.css">
+    <script src="/Public/jquery-1.12.0.js"></script>
+    <script src="/Public/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css"  href="http://cdn.datatables.net/plug-ins/28e7751dbec/integration/jqueryui/dataTables.jqueryui.css">
+    <script type="text/javascript" language="javascript" src="/Public/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="/Public/dataTables.jqueryui.js"></script>
+    <link rel="stylesheet" href="/Public/map_special.css">
+    <script type="text/javascript" charset="utf-8"></script>
+
+    <style>
+        .handup {
+            cursor: pointer;
+        }
+        .nohandup {
+            cursor: not-allowed;
+        }
+        .appMain > .row .main {
+            overflow-y: scroll;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body ng-app="SOCApp" ng-controller="MainController" class="ng-scope" ryt13484="1">
+
+<div class="container-fluid appMain">
+    <div class="row">
+        <!-- uiView: screen --><div ui-view="screen" style="position: absolute;z-index: 99;width:100%;" class="ng-scope"></div>
+
+        <div class="col-md-10 main">
+        <div ui-view="main" class="ng-scope">
+            <p class="ng-scope"></p>
+            <div class="panel panel-default ng-scope">
+                <div class="panel-body">
+                    <i class="glyphicon glyphicon-align-justify"></i>&nbsp;&nbsp;给用户进行赋权&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+            </div>
+
+
+            <div class="panel panel-default ng-scope">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <form role="form" novalidate="" class="ng-pristine ng-valid">
+                                <div class="form-group">
+                                    <label for="">用户所属地</label>
+                                    <select name="" id="city" class="form-control ng-pristine ng-valid ng-touched">
+                                        <option value="上海" selected="selected">上海</option>
+                                        <option value="苏州">苏州</option>
+                                        <option value="杭州">杭州</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">可选报告项目清单</label>
+                                    <div class="form-control keywordsList">
+                                        <table class="table table-striped table-hover">
+                                            <tbody id = 'left_kuang'>
+                                            <tr>
+                                                <td class="ng-binding">暂无数据</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                账号 : <input type="text" id="name">
+                                密码 : <input type="text" id="pwd">
+                                &nbsp;&nbsp;
+                                <button type="button" class="btn btn-danger" id="createUser">生成用户</button>
+                                &nbsp;&nbsp;
+                                <button type="button" class="btn btn-success" id="chooseUser">选择已有用户</button>
+                            </form>
+                            <div class="clearfix"></div>
+                            <div class="form-group chooseUser" style="display:none;">
+                                <div style="margin: 20px 0;"></div>
+                                <label for="">现有用户</label>
+                                <div class="form-control keywordsList">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>用户名</th>
+                                                <th>密码</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id = 'userList'>
+                                        
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">已选项目报告清单</label>
+                                <div class="form-control keywordsListed">
+                                    <table class="table table-striped table-hover">
+                                        <tbody id="right_kuang">
+                                        
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+                                <!--<span ng-show="error" class="text-danger ng-hide">项目报告数量不能超过10项</span>-->
+                                <button class="btn btn-warning pull-right" id="cleanTar">清空</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade ng-scope" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">保存楼盘清单</h4>
+                        </div>
+                        <form role="form" novalidate="" class="ng-pristine ng-invalid ng-invalid-required">
+                            <div class="modal-body">
+
+                                <div class="form-group">
+                                    <label for="">清单名称</label>
+                                    <input type="text" ng-model="orderName" class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required" required="">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary" ng-disabled="!orderName" ng-click="saveOrder()" disabled="disabled">保存</button>
+                            </div>
+                        </form>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+
+            <div class="modal fade ng-scope" id="resultModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">信息</h4>
+                        </div>
+                        <form role="form" novalidate="" class="ng-pristine ng-valid">
+                            <div class="modal-body">
+                                <p class="ng-binding"></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            </div>
+                        </form>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal --></div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+<script>
+    $(function() {
+        $("body").data("target-order", []);
+        var orderLi = $('<tr  class="ng-scope"><td class="ng-binding" data-value="">暂无数据</td></tr>'),
+            tarLi = $("<tr><td><span class='text'></span><em class='glyphicon glyphicon-remove pull-right handup'></em></td></tr>"),
+            orderPane = $('#left_kuang'),
+            tarPane = $("#right_kuang"),
+            userBtn = $("#chooseUser"),
+            userPane = $(".chooseUser"),
+            createUser = $("#createUser"),
+            userList = $("#userList"),
+            city = $("#city"),
+            target = $("body").data("target-order"),
+            cleanTar = $("#cleanTar"),
+            name = $("#name"),
+            pwd = $("#pwd"),
+            dialogPane = $("#resultModal"),
+            refreshTarget = {
+                push: function(tar) {
+                    if(target.indexOf(tar) > -1) return false;
+                    target.push(tar);
+                    this.refresh();
+                },
+                pull: function(tar) {
+                    var index = target.indexOf(tar);
+                    if(index == -1)  return false;
+                    target = target.slice(0, index).concat( target.slice(index+1, target.length) );
+                    this.refresh();
+                },
+                refresh: function() {
+                    $("body").data("target-order", target);
+                    tarPane.empty();
+                    target.forEach(function(tar) {
+                        tarPane.append( tarLi.clone().find(".text").text(tar).end() );
+                    })
+                },
+                empty: function() {
+                    target.length = 0;
+                    this.refresh();
+                }
+            },
+            dialog = {
+                show: function(content, title) {
+                    dialogPane.find(".modal-body").text(content);
+                    if(!!title) dialogPane.find(".modal-title").text(title);
+                    dialogPane.modal("show");
+                    if(typeof title == "function") {
+                        title();
+                    }
+                }
+            };
+
+        function init() {
+            refreshOrderList();
+            bindEvent();
+        }
+
+        function reset() {
+            name.val('');
+            pwd.val('');
+            refreshTarget.empty();
+        }
+
+        function refreshOrderList() {
+            // [
+            //     {project:""}
+            // ]
+            $.get("/Sof/wzy_getOrderList", {c: city.val()}).done(function(order) {
+                orderPane.empty();
+                if(!!order && order.length>0) {
+                    order.forEach( function(val) { orderPane.append(orderLi.clone().find("td").addClass("handup").text(val.project).attr("data-value", val.project).end()) });
+                }else {
+                    orderPane.append(orderLi.clone().find("td").addClass("nohandup").end());
+                }
+            });
+        }
+
+        function bindEvent() {
+            city.on("change", function() {
+                refreshOrderList();
+            });
+            orderPane.on("click","tr td", function(evt) {
+                var tar = $(this).attr("data-value");
+                if( !tar ) return false;
+                refreshTarget.push(tar);
+            });
+            tarPane.on("click", "tr td em", function() {
+                refreshTarget.pull($(this).siblings(".text").text());
+            });
+            cleanTar.on("click", function() {
+                refreshTarget.empty();
+            });
+            createUser.on("click", function() {
+                var nameStr = name.val().replace(/['"/\\]/g, "");
+                var pwdStr = pwd.val().replace(/['"/\\]/g, "");
+                var project = "";
+                if(target.length == 0) {
+                    dialog.show("请选择至少一个报告清单！", "错误");
+                    return false;
+                }else {
+                    project = target.map( function(val) { return ["'", val, "'"].join("") } ).join()
+                }
+                if(!!nameStr && !!pwdStr) {
+                    // {
+                    //     message: ""
+                    // }
+                    $.get("/Sof/wzy_createuser", {name: nameStr, pwd: pwdStr, project: project })
+                     .done( function(data) {
+
+                         dialog.show(data.message, function() {
+                             $.get("/Sof/wzy_getUser")
+                                     .done(function(data) {
+                                         userPane.show();
+                                         if(!!data && data.length > 0) {
+                                             userList.empty();
+                                             data.forEach( function(user) {
+                                                 userList.append(orderLi.clone().data("data-value", user).find("td").replaceWith( "<td>"+user.username+"</td><td>"+user.password+"</td>" ).end());
+                                             })
+                                         }
+                                     });
+                             reset();
+                         });
+                     } );
+
+
+                }else {
+                    dialog.show("请输入完整的账号与密码！", "错误");
+                }
+            });
+
+            userBtn.on("click", function() {
+                // {
+                //     username: "",
+                //     password: "",
+                //     projectL ""
+                // }
+                $.get("/Sof/wzy_getUser")
+                 .done(function(data) {
+                     userPane.show();
+                     if(!!data && data.length > 0) {
+                         userList.empty();
+                         data.forEach( function(user) {
+                             userList.append(orderLi.clone().data("data-value", user).find("td").replaceWith( "<td>"+user.username+"</td><td>"+user.password+"</td>" ).end());
+                         })
+                     }
+                 })
+            });
+            userList.on("click", "tr",function() {
+                $(this).siblings().removeClass("bg-success");
+                $(this).addClass("bg-success");
+                var user = $(this).data("data-value");
+                refreshTarget.empty();
+                name.val(user.username);
+                pwd.val(user.password);
+
+                king = user.project;
+                king1=user.project.split(",");
+
+                user.project.split(",").forEach(function(p) {
+//                            console.log(p.replace("'",""));
+                    refreshTarget.push(p.replace(/'/g,''));
+                }
+                )
+            })
+
+        }
+
+        init();
+    });
+
+</script>
+
+</html>

@@ -1,0 +1,41 @@
+﻿{"nodes":[
+{"category":0,"name":"乔布斯", "value":["身高:161cm","体重:68kg","年龄:28岁"],"label": "乔布斯","symbolSize": 25},
+{"category":1,"name":"丽萨-乔布斯","value":["身高:161cm","体重:68kg","年龄:28岁"],"symbolSize": 25},
+{"category":1,"name":"保罗-乔布斯","value":["身高:161cm","体重:68kg","年龄:28岁"],"symbolSize": 25},
+{"category":1,"name":"克拉拉-乔布斯","value":["身高:161cm","体重:68kg","年龄:28岁"],"symbolSize": 25},
+{"category":1,"name":"劳伦-鲍威尔","value":["身高:161cm","体重:68kg","年龄:28岁"],"symbolSize": 25},
+{"category":2,"name":"史蒂夫-沃兹尼艾克","value":["身高:161cm","体重:68kg","年龄:28岁"],"symbolSize": 25},
+{"category":2,"name":"奥巴马","value":["她是乔布斯的独生女儿"],"symbolSize": 25},
+{"category":2,"name":"比尔-盖茨","value":"乔布斯","symbolSize": 25},
+{"category":2,"name":"乔纳森-艾夫","value":"乔布斯","symbolSize": 25},
+{"category":2,"name":"蒂姆-库克","value":"乔布斯","symbolSize": 25},
+{"category":2,"name":"龙-韦恩","value":"乔布斯","symbolSize": 25}
+],
+"links":[
+{"source":"丽萨-乔布斯","target":"乔布斯","weight":"1","name":"女儿" ,"value":["身高:161cm","体重:68kg","年龄:28岁"]},
+{"source":"保罗-乔布斯","target":"乔布斯","weight":"1","name":"父亲" ,"value":["身高:162cm","体重:68kg","年龄:28岁"]},
+{"source":"克拉拉-乔布斯","target":"乔布斯","weight":"1","name":"母亲" ,"value":["身高:163cm","体重:68kg","年龄:28岁"]},
+{"source":"劳伦-鲍威尔","target":"乔布斯","weight":"1","name": "母亲" ,"value":["身高:164cm","体重:68kg","年龄:28岁"]},
+{"source":"史蒂夫-沃兹尼艾克","target":"乔布斯","weight":"1","name":"合伙人","value":["身高:165cm","体重:68kg","年龄:28岁"]},
+{"source":"奥巴马","target":"乔布斯","weight":"1","name":"母亲" ,"value":["身高:166cm","体重:68kg","年龄:28岁"]},
+{"source":"比尔-盖茨","target":"乔布斯","weight":"1","name":"竞争对手","value":["身高:167cm","体重:68kg","年龄:28岁"]},
+{"source":"乔纳森-艾夫","target":"乔布斯","weight":"1","name":"爱将","value":["身高:168cm","体重:68kg","年龄:28岁"]},
+{"source":"蒂姆-库克","target":"乔布斯","weight":"1","name":"接班人","value":["身高:169cm","体重:68kg","年龄:28岁"]},
+{"source":"龙-韦恩","target":"乔布斯","weight":"1","name":"母亲" ,"value":["身高:170cm","体重:68kg","年龄:28岁"]},
+{"source":"克拉拉-乔布斯","target":"保罗-乔布斯","weight":"1","name": "母亲" ,"value":["身高:171cm","体重:68kg","年龄:28岁"]},
+{"source":"奥巴马","target":"保罗-乔布斯","weight":"1","name": "母亲" ,"value":["身高:172cm","体重:68kg","年龄:28岁"]},
+{"source":"奥巴马","target":"克拉拉-乔布斯","weight":"1","name": "母亲" ,"value":["身高:173cm","体重:68kg","年龄:28岁"]},
+{"source":"奥巴马","target":"劳伦-鲍威尔","weight":"1","name":"母亲" ,"value":["身高:174cm","体重:68kg","年龄:28岁"]},
+{"source":"奥巴马","target":"史蒂夫-沃兹尼艾克","weight":"1","name":"母亲" ,"value":["身高:175cm","体重:68kg","年龄:28岁"]},
+{"source":"比尔-盖茨","target":"奥巴马","weight":"1","name":"母亲" ,"value":["身高:176cm","体重:68kg","年龄:28岁"]},
+{"source":"比尔-盖茨","target":"克拉拉-乔布斯","weight":"1","name":"母亲" ,"value":["身高:177cm","体重:68kg","年龄:28岁"]},
+{"source":"蒂姆-库克","target":"奥巴马","weight":"1","name":"母亲" ,"value":["身高:178cm","体重:68kg","年龄:28岁"]}
+],
+"categories":[
+{"name": "人物"},
+{"name": "家人"},
+{"name": "朋友"}
+],
+"legend":["人物","家人","朋友"],
+"title":"乔布斯的人物关系"
+}

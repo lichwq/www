@@ -1,0 +1,32 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title></title>
+	<script src="jquery/Jquery1.7.js" type="text/javascript"></script>
+	<link href="css/jquery.autocomplete.css" rel="stylesheet" type="text/css" />
+	<script src="jquery/jquery.autocomplete.js" type="text/javascript"></script>
+
+
+	<script type="text/javascript">
+		$(function () {
+			var array = ['asp.net', 'asp.net mvc', 'wcf', 'wpf', 'win8', 'windows phone', '张东', '张熙', '张亚飞'];
+			$('#txtKey').autocomplete(array).result(function (event, data) {
+
+				window.location.href = 'http://www.baidu.com/s?wd=' + data + '&rsv_bp=0&ch=&tn=baidu&bar=&rsv_spt=3&ie=utf-8&rsv_sug3=6&rsv_sug=0&rsv_sug1=3&rsv_sug4=229&inputT=1458';
+
+			});
+		})
+	</script>
+
+	<style type="text/css">
+		#txtKey
+		{ width:300px;}
+	</style>
+
+</head>
+<body>
+<div>
+	<input type="text" class="texter" id="texter" onKeyUp="showBtn();">
+	<input type="submit" class="clearer" id="clearBtn" onClick="clearText();" value="x">
+</div>
+</body>
+</html>

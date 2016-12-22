@@ -1,0 +1,1 @@
+a:5:{i:0;s:7:"tagname";i:1;s:10:"start_date";i:2;s:8:"end_date";i:3;s:7:"details";s:5:"_type";a:4:{s:7:"tagname";s:11:"varchar(20)";s:10:"start_date";s:11:"varchar(20)";s:8:"end_date";s:11:"varchar(20)";s:7:"details";s:11:"varchar(50)";}}

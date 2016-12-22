@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="UTF-8">
+    <title>上富楼盘数据异常状态处理系统</title>
+    <link rel="stylesheet" href="/public/jquery-ui.css">
+    <script src="/public/jquery-1.12.0.js"></script>
+    <script src="/public/jquery-ui.js"></script>
+    <link rel="stylesheet" type="text/css"  href="http://cdn.datatables.net/plug-ins/28e7751dbec/integration/jqueryui/dataTables.jqueryui.css">
+    <script src="/Public/echarts.min.js"></script>
+
+    <script>
+        $(function () {
+            function getQueryString(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                var r = window.location.search.substr(1).match(reg);
+                if ( encodeURI(r) != null) return unescape(encodeURI(r[2])); return null;
+            }
+
+            var key = decodeURI(getQueryString("keywords"));
+
+            var _width = decodeURI(getQueryString("width"));
+
+            var _height = decodeURI(getQueryString("height"));
+
+            var cccc = 'width: '+_width+';height: '+_height;
+
+            $('#main_1').attr('style',cccc );
+
+            var myChart = echarts.init(document.getElementById('main_1'));
+            myChart.showLoading();
+
+            $.get('__URL__/test_picture', {keywords: key}).done(function (result) {
+
+                console.log(result);
+
+                var k = [];
+                var c = [];
+                var b = [];
+                var d = [];
+                var i = 0;
+
+                result.forEach(function(kk) {
+                    k[i] = kk['date'];
+                    b[i] = kk['indname'];
+                    c[i] = kk['typename'];
+                    d[i] = Number(kk['total_view_count']);
+                    i=i+1;
+                });
+
+                var title = result[0]['typename'];
+
+                var dataAll = [
+                    [
+                        [10.0, 8.04],
+                        [8.0, 6.95],
+                        [13.0, 7.58],
+                        [9.0, 8.81],
+                        [11.0, 8.33],
+                        [14.0, 9.96],
+                        [6.0, 7.24],
+                        [4.0, 4.26],
+                        [12.0, 10.84],
+                        [7.0, 4.82],
+                        [5.0, 5.68]
+                    ],
+                    [
+                        [10.0, 9.14],
+                        [8.0, 8.14],
+                        [13.0, 8.74],
+                        [9.0, 8.77],
+                        [11.0, 9.26],
+                        [14.0, 8.10],
+                        [6.0, 6.13],
+                        [4.0, 3.10],
+                        [12.0, 9.13],
+                        [7.0, 7.26],
+                        [5.0, 4.74]
+                    ],
+                    [
+                        [10.0, 7.46],
+                        [8.0, 6.77],
+                        [13.0, 12.74],
+                        [9.0, 7.11],
+                        [11.0, 7.81],
+                        [14.0, 8.84],
+                        [6.0, 6.08],
+                        [4.0, 5.39],
+                        [12.0, 8.15],
+                        [7.0, 6.42],
+                        [5.0, 5.73]
+                    ],
+                    [
+                        [8.0, 6.58],
+                        [8.0, 5.76],
+                        [8.0, 7.71],
+                        [8.0, 8.84],
+                        [8.0, 8.47],
+                        [8.0, 7.04],
+                        [8.0, 5.25],
+                        [19.0, 12.50],
+                        [8.0, 5.56],
+                        [8.0, 7.91],
+                        [8.0, 6.89]
+                    ]
+                ];
+
+                var markLineOpt = {
+                    animation: false,
+                    label: {
+                        normal: {
+                            formatter: 'y = 0.5 * x + 3',
+                            textStyle: {
+                                align: 'right'
+                            }
+                        }
+                    },
+                    lineStyle: {
+                        normal: {
+                            type: 'solid'
+                        }
+                    },
+                    tooltip: {
+                        formatter: 'y = 0.5 * x + 3'
+                    },
+                    data: [
+                        {
+                            yAxis: 5,
+                            symbol: 'none'
+                        },
+                        [{
+                            coord: [0, 5],
+                            symbol: 'none'
+                        }, {
+                            coord: [20, 13],
+                            symbol: 'none'
+                        }]
+
+                    ]
+                };
+
+                option = {
+                    title: {
+                        text: 'Anscombe\'s quartet',
+                        x: 'center',
+                        y: 0
+                    },
+                    grid: [
+                        {x: '7%', y: '7%', width: '38%', height: '38%'}
+                    ],
+                    tooltip: {
+                        formatter: 'Group {a}: ({c})'
+                    },
+                    xAxis: [
+                        {gridIndex: 0, min: 0, max: 20}
+                    ],
+                    yAxis: {
+
+                    },
+                    series: [
+                        {
+                            name: 'I',
+                            type: 'scatter',
+                            xAxisIndex: 0,
+                            yAxisIndex: 0,
+                            data: dataAll[0],
+                            markLine: markLineOpt
+                        }
+                    ]
+                };
+                myChart.hideLoading();
+                myChart.setOption(option);
+            });
+        });
+
+    </script>
+
+
+</head>
+<body>
+
+<div align="center" >
+
+</div>
+
+<div id="main_1"></div>
+
+
+</body>
+</html>

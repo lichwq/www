@@ -1,0 +1,1 @@
+a:3:{i:0;s:6:"openid";i:1;s:8:"nickname";s:5:"_type";a:2:{s:6:"openid";s:12:"varchar(255)";s:8:"nickname";s:12:"varchar(255)";}}

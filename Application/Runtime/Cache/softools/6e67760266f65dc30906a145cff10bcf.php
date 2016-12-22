@@ -1,0 +1,682 @@
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
+<html style="width: 100%;height: 100%">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <style type="text/css">
+        body, html, #allmap {
+            width: 100%;
+            height:100%;
+            overflow: hidden;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+    </style>
+
+    <style>
+        .text {
+            width: 240px;
+            height: 30px;
+            position: relative;
+            margin: 20px 0 0 20px;
+        }
+        .text .clean {
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            display: none;
+        }
+        .text input {
+            width: 240px;
+            height: 30px;
+        }
+    </style>
+
+    <style>
+        .list {
+            padding: 0;
+        }
+
+        .list li {
+            line-height: 24px;
+            text-indent: 1em;
+        }
+
+        .list li:nth-child(2n+1) {
+            background-color: #eee;
+        }
+
+        #result_div_right ul li:nth-child(1) {
+            color: red;
+        }
+
+    </style>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="/Public/loading.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3c0e5fed39c5e64f6effefa1e1f54e0a"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script src="/Public/jquery-1.12.0.js"></script>
+    <script src="/Public/jquery-ui.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+    <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/data/points-sample-data.js"></script>
+    <script src="/Public/echarts.min.js"></script>
+
+    <title>小区分析</title>
+
+
+    <script type="text/javascript">
+        $(function () {
+            $("#keywords_search").keyup(function () {
+                k = $(this).val();
+                if (k == '') {
+//                    $('#result_div').hide();
+                    return;
+                }
+                $.get('/Sof/search_keywords_ajax', {res: k}).done(function (shuju) {
+                            $('#result_div').show();
+                            $('#result_div ul').empty();
+                            if (!!shuju && shuju.length > 0) {
+                                var li = $('<li>');
+                                shuju.forEach(function (r) {
+                                    var tmp = li.clone();
+                                    tmp.val(r.keywords).text(r.keywords);
+                                    $('#result_div ul').append(tmp);
+                                })
+                            } else {
+                                $('#result_div ul').append("<li>对不起,没有搜到楼盘</li>");
+                            }
+                        }
+                );
+            });
+
+            var li_right = $('<li>');
+
+            function creatInput() {
+                var template = $('<div class="text">' +
+                        '<input tyle="text" />' +
+                        '<div class="clean">X</div>' +
+                        '</div>');
+                template.find('input').on('keyup', function() {
+                    if( template.find('input').val() == '' ) template.find('.clean').hide();
+                    template.find('.clean').show();
+                });
+                template.find('.clean').on('click', function() {
+                    template.find('input').val('');
+                    $(this).hide();
+                });
+                return template;
+            }
+
+            function scan() {
+                $('[xinput]').each(function() {
+                    $(this).append( new creatInput() );
+                })
+            }
+            scan();
+
+
+//            点击左侧框,将li的text写入右侧框并且写入输入框
+            $("#result_div ul").on('click', 'li', function () {
+                var k = $(this).text();
+                $('#keywords_search').val(k);
+
+                var king2 =  right_div_single(k);
+                if(king2=='chongfu'){
+                    alert("您点击了已经存在于最终清单的楼盘");
+                    return;
+                }
+
+                var tmp_right = li_right.clone();
+                tmp_right.val(k).text(k);
+                $('#result_div_right ul').append(tmp_right);
+//                console.log(right_div_single(k));
+//                console.log(k);
+                right_div_bianli();
+            });
+
+            var li_right_2 = $('<li>');
+
+//            点击中间框将li的text加入右侧框
+            $("#result_div_middle ul").on('click', 'li', function () {
+                var k = $(this).text();
+                var king2 =  right_div_single(k);
+                if(king2=='chongfu'){
+                    alert("您点击了已经存在于最终清单的楼盘");
+                    return;
+                }
+                var tmp_right = li_right_2.clone();
+                tmp_right.val(k).text(k);
+                $('#result_div_right ul').append(tmp_right);
+                right_div_bianli();
+            });
+
+//            点击右侧框去除li的text
+            $("#result_div_right ul").on('click', 'li', function () {
+                $(this).remove();
+                right_div_bianli();
+            });
+
+//            计算右侧框li的个数
+            function right_div_bianli(){
+                var n=0;
+                $('#result_div_right ul li').each(function(){
+                    n=n+1;
+//                    console.log($(this).text());
+                });
+                $("#delete_all_right").text("清空已选择清单,已有"+n+"个")
+            }
+
+
+//            遍历右侧框,看看和传进来的值是否相同
+            function right_div_single(canshu)
+            {
+                var n=0;
+
+                var shuzu =  [];
+
+                $('#result_div_right ul li').each(function(){
+                    shuzu[n] = $(this).text();
+                    n = n+1;
+                });
+
+                var right_list = $('#result_div_right ul li');
+
+                for (var i = 0;i <= right_list['length']; i++) {
+                    if(shuzu[i]==canshu){
+                        return 'chongfu';
+                    }
+                }
+            }
+
+            $("#delete_all_right").click(function () {
+                $("#result_div_right ul").empty();
+                right_div_bianli();
+            });
+
+            $("#jingpin_list").click(function () {
+                var keywords = $('#keywords_search').val();
+                $.get('/Sof/some_keywords_jingpin', {keywords: keywords}).done(function (shuju) {
+                            $('#result_div_middle').show();
+                            $('#result_div_middle ul').empty();
+                            if (!!shuju && shuju.length > 0) {
+                                var li = $('<li>');
+                                shuju.forEach(function (r) {
+                                    var tmp = li.clone();
+                                    tmp.val(r.keywords).text(r.keywords);
+                                    $('#result_div_middle ul').append(tmp);
+                                })
+                            } else {
+                                $('#result_div_middle ul').append("<li>这个楼盘没有系统推荐竞品</li>");
+                            }
+                        }
+                );
+            });
+
+
+            $("#tijiao_list").click(function () {
+                var n=0;
+
+                $('#test').show();
+
+                total_shuzu =  [];
+                pzbs='';
+
+                $('#result_div_right ul li').each(function(){
+                    total_shuzu[n] = $(this).text();
+                    pzbs = pzbs+','+'\''+$(this).text()+'\'';
+                    n = n+1;
+                });
+
+                total_kess = total_shuzu[0];
+
+                $("#step1").hide();
+                $("#step2").show();
+
+
+
+                map.clearOverlays();
+                $.get('/Sof/xq_circle_map_tools_port', {benan_loupan: total_kess}).done(function (result) {
+                    var x;
+                    var y;
+                    var count_paixu;
+
+                    for (var i = 0; i < result.length; i++) {
+//                tmp.push(new BMap.Point(result[i].c_y, result[i].c_x));
+                        x = result[i].c_x;
+                        y = result[i].c_y;
+                        count_paixu = result[i].count_paixu;
+
+                        var circle = new BMap.Circle(new BMap.Point(y, x), 1000,{strokeColor:"red", strokeWeight:1, strokeOpacity:0.8});
+                        if(count_paixu<50&&count_paixu>1){
+                            circle.setFillColor("white");
+                            circle.setFillOpacity(0.2);
+                        }else if(count_paixu>50&&count_paixu<100){
+                            circle.setFillColor("blue");
+                            circle.setFillOpacity(0.3);
+                        }else if(count_paixu>=100&&count_paixu<200){
+                            circle.setFillColor("yellow");
+                            circle.setFillOpacity(0.4);
+                        }else if(count_paixu>=200&&count_paixu<500){
+                            circle.setFillColor("orange");
+                            circle.setFillOpacity(0.5);
+                        }else if(count_paixu>500){
+                            circle.setFillColor("red");
+                            circle.setFillOpacity(0.6);
+                        }
+                        map.addOverlay(circle);
+//
+
+                        circle.addEventListener("mouseover", function () {
+                            this.setStrokeColor("black");
+                            this.setStrokeWeight("4");
+                        });
+
+                        circle.addEventListener("click", function () {
+                            $('#test').show();
+                            this.setStrokeColor("blue");
+                            this.setStrokeWeight("4");
+
+
+                            var x1 = this['point']['lat'];
+                            var y1 = this['point']['lng'];
+
+                            $.get('/Sof/xq_circle_map_tools_dashboard_port', {c_x: x1,c_y: y1,keywords_shuzu: pzbs,benan_key: total_kess}).done(function (result) {
+//                        $('#dashboard').html('热区人数 : '+result[0][0]['total_user_count']+'</br>'+'关注本案客户量 : '+result[1][0]['total_user_count']+'</br>'+'关注竞品客户量 : '+result[2][0]['total_user_count']);
+
+                                var total_count=parseInt(result[1][0]['total_user_count'])+parseInt(result[2][0]['total_user_count']);
+
+                                var lv1 = (total_count/result[0][0]['total_user_count']).toFixed(4)*100;
+
+                                var lv  = parseFloat(lv1).toFixed(2)+'%';
+
+                                var king_total = [];
+                                for(i=0;i<result[5].length;i++){
+                                   king_total[i] = result[5][i]['name'];
+                                }
+
+//                                console.log(king_total);
+
+                                $('#dashboard').html('<table  class="table table-striped" id = "case">'+'<thead>'+
+                                 '<tr>'+
+                                  '<th>热区人数</th>'+
+                                   '<th>关注本案客户量</th>'+
+                                    '<th>关注竞品客户量</th>'+
+                                     '<th>总客户量</th>'+
+                                     '<th>客户供给率</th>'+
+                                     '</tr>'+
+                                     '<tr>'+
+                                     '<td>'+result[0][0]['total_user_count']+'</td>'+
+                                     '<td>'+result[1][0]['total_user_count']+'</td>'+
+                                     '<td>'+result[2][0]['total_user_count']+'</td>'+
+                                     '<td>'+total_count+'</td>'+
+                                     '<td>'+lv+'</td>'+
+                                     '</tr>'+
+                                     '</thead>'+
+                                     '<tbody id="result_table">'+
+                                     '</tbody>'+
+                                     '</table>'
+                                 +'<div id="main_1"  style="height: 40%;margin-left: 1%;margin-right: 1%"></div>'
+                                        +'<div id="main_2"  style="height: 40%;margin-left: 1%;margin-right: 1%"></div>'
+                                );
+
+                                $('#dashboard').fadeIn(200);
+
+                                var myChart = echarts.init(document.getElementById('main_1'));
+                                myChart.showLoading();
+                                var option = {
+                                    title: {
+                                        left: 'center',
+                                        text: '人群关注楼盘排名'
+                                    },
+                                    color: ['orange'],
+                                    tooltip : {
+                                        formatter: '{c}',
+                                        trigger: 'axis',
+                                        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                                        }
+                                    },
+                                    grid: {
+                                        top:'5%',
+                                        left: '1%',
+                                        right: '1%',
+                                        bottom: '15%',
+                                        containLabel: true
+                                    },
+                                    xAxis : [
+                                        {   axisLabel: {
+                                            rotate : 30,
+                                            interval: 0
+                                        },
+                                            data : result[4]
+                                        }
+                                    ],
+                                    yAxis : [
+                                        {
+                                            type : 'value'
+                                        }
+                                    ],
+                                    series : [
+                                        {
+                                            silent:true,
+                                            type:'bar',
+                                            data: result[3]
+                                        }
+                                    ]
+                                };
+
+                                myChart.hideLoading();
+                                myChart.setOption(option);
+
+
+                                var myChart_2 = echarts.init(document.getElementById('main_2'));
+                                myChart_2.showLoading();
+
+
+                                var  option_2 = {
+                                    title: {
+                                        left: 'center',
+                                        top: 5,
+                                        text: '环境指数'
+                                    },
+                                    tooltip : {
+                                        trigger: 'axis',
+                                        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                                        }
+                                    },
+                                    legend: {
+                                    },
+                                    grid: {
+                                        left: '1%',
+                                        right: '1%',
+                                        bottom: '1%',
+                                        containLabel: true
+                                    },
+                                    xAxis : [
+                                        {
+                                            type : 'value'
+                                        }
+                                    ],
+                                    yAxis : [
+                                        {
+                                            type : 'category',
+                                            axisTick : {show: false},
+                                            data : king_total
+                                        }
+                                    ],
+                                    series : [
+                                        {
+                                            name:'指数',
+                                            type:'bar',
+                                            label: {
+                                                normal: {
+                                                    show: true,
+                                                    position: 'inside'
+                                                }
+                                            },
+                                            data:result[5]
+                                        }
+                                    ]
+                                };
+
+                                myChart_2.hideLoading();
+                                myChart_2.setOption(option_2);
+
+                                $('#test').hide();
+                            });
+                        });
+
+                        circle.addEventListener("mouseout", function () {
+                            this.setStrokeColor("red");
+                            this.setStrokeWeight("1");
+                            $('#dashboard').fadeOut(200);
+                        });
+                    }
+
+                    map.centerAndZoom(new BMap.Point(121.468,31.087),12);
+
+                    $('#test').hide();
+
+                });
+            });
+        })
+
+    </script>
+
+
+
+</head>
+<body>
+<nav class="navbar navbar-inverse" role="navigation" style="margin-bottom:0px;">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="sof_home">上富科技运营系统</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    项目报告
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="gongdanshangchuan">报告工单上传</a></li>
+                    <li><a href="work_order_tools">报告工单监控</a></li>
+                    <li><a href="sof_map_tools">报告人群地图</a></li>
+                    <li><a href="shiwu_people">项目三级人群</a></li>
+                    <li><a href="yichang">项目人群异动分析</a></li>
+                    <li><a href="bussiness_assessment_workorder">业务评估系统</a></li>
+                    <li><a href="click_tools">结案报告</a></li>
+                    <li class="active"><a href="xq_circle_map_tools">小区分析</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    销售支持
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <!--<li><a href="">项目电话</a></li>-->
+                    <!--<li><a href="">项目热区</a></li>-->
+                    <li><a href="sof_map_tools_zhongjie">中介地图</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    投放支持
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="sof_cm">电信投放部署</a></li>
+                    <li><a href="">SOF投放部署</a></li>
+                    <li><a href="sites_6_points">围栏坐标（杭州专用）</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    ETL处理监控
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="">楼盘字典入库</a></li>
+                    <li><a href="">上海监控</a></li>
+                    <li><a href="">江苏监控</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="nav pull-right">
+            <li>
+                <a href="sof_login"> 退出登录</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+
+
+
+<div id="step1">
+    <div style="margin-top: 1%;margin-left: 12%" class="">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-search">
+                </span>
+            </span>
+            <input style="width: 22%;" type="text" id="keywords_search" class="form-control" placeholder="请输入要搜索的楼盘名称">
+            <button id="jingpin_list" style="margin-left: 14%" class="btn btn-default">查看系统推荐竞品</button>
+            <div id="delete_all_right" style="margin-left: 20%" class="btn btn-danger">清空已选择清单,已有0个</div>
+        </div>
+
+
+        <!--<input class=""-->
+        <!--id="keywords_search"-->
+        <!--placeholder="请输入需要搜索的楼盘" type="text" style="width: 180px;">-->
+        <!--<button type="button" class="btn btn-primary btn-sm" id="isofficeornot_button">生成-->
+        <!--</button>-->
+    </div>
+    <div  class="form-control" id="result_div" style="
+    display: inline-block;
+    border: 1px solid #000;
+    width: 22%;
+    height: 500px;
+    margin-left: 12%;
+    margin-top: 1%;
+    overflow-y: scroll;">
+        <ul style="
+        list-style: none;
+    " class="list">
+        </ul>
+    </div>
+
+
+    <div class="form-control" id="result_div_middle" style="
+    display: inline-block;
+    border: 1px solid #000;
+    width: 22%;
+    height: 500px;
+    margin-left: 5%;
+    margin-top: 1%;
+    overflow-y: scroll;">
+        <ul style="
+        list-style: none;
+    " class="list">
+        </ul>
+    </div>
+
+    <div  class="form-control" id="result_div_right" style="
+    display: inline-block;
+    border: 1px solid #000;
+    width: 22%;
+    height: 500px;
+    margin-left: 5%;
+    margin-top: 1%;
+    overflow-y: scroll;">
+        <ul id="result_div_right_ul" style="
+        list-style: none;
+    " class="list">
+        </ul>
+    </div>
+
+
+    <div id="tijiao_list" style="width: 19%;margin-left: 68%;margin-top: 1%" class="btn btn-primary">提交</div>
+
+</div>
+
+
+
+
+<div id="step2" style="display: none">
+
+    <div id="button_group" style="
+        position: absolute;
+        margin-left: 2%;
+        z-index: 9;
+        margin-top: 38%">
+
+        <button class="btn btn-danger" id="fanhui_step1">返回</button>
+
+    </div>
+
+    <div id="allmap" style="height: 1200px"></div>
+
+
+
+<div id="dashboard"  style="
+display: none;
+position: absolute;
+font-size: 20px;
+/*padding-left:100px;*/
+left: 45%;
+top:10%;
+width: 800px;
+height:600px;
+background-color: white;
+border: solid 1px #ccff00;
+filter: Chroma(Color=#FFFFFF);
+opacity:0.9; ">
+    <!--<div id="main_1"  style="height: 70%"></div>-->
+</div>
+
+<div id="test"  style=";background-color: white; display :none ; opacity: 0.6;position: absolute;left: 0;top:0;height: 100%;width: 100%;margin-top: 53px;" class="spinner">
+    <div class="rect1"></div>
+
+    <div class="rect2"></div>
+
+    <div class="rect3"></div>
+
+    <div class="rect4"></div>
+
+    <div class="rect5"></div>
+
+    <div class="rect6"></div>
+
+    <div class="rect7"></div>
+</div>
+
+</div>
+
+
+</body>
+</html>
+
+
+<script type="text/javascript">
+
+    var map = new BMap.Map("allmap");      //设置卫星图为底图
+    map.centerAndZoom(new BMap.Point(121.46299,31.137201),12);                     // 初始化地图,设置中心点坐标和地图级别。
+    map.addControl(new BMap.NavigationControl());  //添加鱼骨控件
+    map.addControl(new BMap.MapTypeControl());          //添加地图类型控件
+
+    var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+    var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+    var top_right_navigation = new BMap.NavigationControl({
+        anchor: BMAP_ANCHOR_TOP_RIGHT,
+        type: BMAP_NAVIGATION_CONTROL_SMALL
+    }); //右上角，仅包含平移和缩放按钮
+    map.enableScrollWheelZoom(); // 允许滚轮缩放
+    map.addControl(top_left_control);
+    map.addControl(top_left_navigation);
+
+    $(function () {
+
+        $("#fanhui_step1").click(function () {
+
+            $("#step2").hide();
+            $("#step1").show();
+
+        });
+
+    });
+
+
+</script>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" version="1.2" xmlns:viz="http://www.gexf.net/1.2draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd">
+  <meta lastmodifieddate="2014-01-30">
+    <creator>Gephi 0.8.1</creator>
+    <description></description>
+  </meta>
+  <graph defaultedgetype="undirected" mode="static">
+    <attributes class="node" mode="static">
+    	<attribute id="modularity_class" title="Modularity Class" type="integer"></attribute>
+      <attribute id="symbol" title="symbol_icon" type="char"></attribute>
+      <attribute id="color" title="symbol_color" type="char"></attribute>
+    </attributes>
+    <nodes>
+      <node id="0" label="张三">
+        <attvalues>
+        	<attvalue for="modularity_class" value="0"></attvalue>
+        <attvalue for="symbol" value="circle"></attvalue>
+        <attvalue for="color" value="red"></attvalue>
+        </attvalues>
+        <viz:size value="38"></viz:size>
+      </node>
+      <node id="1" label="李四">
+        <attvalues>
+        	<attvalue for="modularity_class" value="1"></attvalue>
+        <attvalue for="symbol" value="circle"></attvalue>
+        <attvalue for="color" value="blue"></attvalue>
+        </attvalues>
+        <viz:size value="10"></viz:size>
+      </node>
+      <node id="2" label="王二麻子">
+        <attvalues>
+        	<attvalue for="modularity_class" value="0"></attvalue>
+        <attvalue for="symbol" value="circle"></attvalue>
+        <attvalue for="color" value="red"></attvalue>
+        </attvalues>
+        <viz:size value="9"></viz:size>
+      </node>
+      <node id="3" label="小李">
+        <attvalues>
+        	<attvalue for="modularity_class" value="1"></attvalue>
+        <attvalue for="symbol" value="circle"></attvalue>
+        <attvalue for="color" value="red"></attvalue>
+        </attvalues>
+        <viz:size value="9"></viz:size>
+      </node>
+        <node id="4" label="老邹鹏">
+        <attvalues>
+        	<attvalue for="modularity_class" value="0"></attvalue>
+        <attvalue for="symbol" value="circle"></attvalue>
+        <attvalue for="color" value="red"></attvalue>
+        </attvalues>
+        <viz:size value="15"></viz:size>
+      </node>
+        <node id="5" label="大涨成">
+        <attvalues>
+        	<attvalue for="modularity_class" value="1"></attvalue>
+        <attvalue for="symbol" value="circle"></attvalue>
+        <attvalue for="color" value="red"></attvalue>
+        </attvalues>
+        <viz:size value="9"></viz:size>
+      </node>
+              <node id="6" label="xiao成">
+        <attvalues>
+        	<attvalue for="modularity_class" value="0"></attvalue>
+        <attvalue for="symbol" value="circle"></attvalue>
+        <attvalue for="color" value="red"></attvalue>
+        </attvalues>
+        <viz:size value="9"></viz:size>
+      </node>
+         <node id="7" label="你你你">
+        <attvalues>
+        	<attvalue for="modularity_class" value="1"></attvalue>
+        <attvalue for="symbol" value="circle"></attvalue>
+        <attvalue for="color" value="red"></attvalue>
+        </attvalues>
+        <viz:size value="9"></viz:size>
+      </node>
+         <node id="8" label="李自成">
+        <attvalues>
+        	<attvalue for="modularity_class" value="0"></attvalue>
+        <attvalue for="symbol" value="circle"></attvalue>
+        <attvalue for="color" value="red"></attvalue>
+        </attvalues>
+        <viz:size value="9"></viz:size>
+      </node>
+          </nodes>
+    <edges>
+      <edge id="0" source="1" target="0"  weight="8.0">
+        <attvalues></attvalues>
+      </edge>
+      <edge id="1" source="1" target="0" weight="8.0">
+        <attvalues></attvalues>
+      </edge>
+      <edge id="2" source="2" target="0" weight="25.0">
+        <attvalues></attvalues>
+      </edge>
+      <edge id="3" source="3" target="0" weight="6.0">
+        <attvalues></attvalues>
+      </edge>
+      <edge id="4" source="4" target="0"  weight="8.0">
+        <attvalues></attvalues>
+      </edge>
+      <edge id="5" source="5" target="0"  weight="8.0">
+        <attvalues></attvalues>
+      </edge>
+         <edge id="6" source="6" target="3"  weight="8.0">
+        <attvalues></attvalues>
+      </edge>
+        <edge id="7" source="7" target="3"  weight="8.0">
+        <attvalues></attvalues>
+      </edge>
+        <edge id="8" source="8" target="3">
+        <attvalues></attvalues>
+      </edge>
+    </edges>
+  </graph>
+</gexf>
