@@ -7,7 +7,7 @@
     <script src="/Public/jquery-1.12.0.js"></script>
     <script src="/Public/jquery-ui.js"></script>
     <style type="text/css">
-        * {margin:0px;padding:0px;}
+        /** {margin:0px;padding:0px;}*/
         #body {width:500px;}
         #talkbox {border:1px olive solid; width:500px; min-height:100px; float:left; padding:10px;}
         #input {float:right; margin-top:20px}
@@ -21,7 +21,8 @@
 </head>
 <body>
 <div style="margin-left: auto;margin-right: auto;margin-top: 10%" id="body">
-    <div id="talkbox">
+    <h2>360聊天机器人测试程序,create by:王强</h2>
+        <div id="talkbox">
 
     </div>
     <div  id="input">
@@ -47,12 +48,19 @@
         ele = '<div  class="left"><div class="pic"><img src="/Public/mi.png" width="40" height="40" /></div><div class="msg">你：'+msg+'</div></div>';
         var simsimi = '';
         d.append(ele);        //将输入框中的值放入聊天框
-        $.get("__URL__/autotalk",{text:msg},function(data){    //将要发的信息ajax提交到php页面
-            var obj = eval('('+data+')');            //php段请求接口，返回来json数据 obj.response是小黄鸡回复的
+        $.get("__URL__/autotalk",{text:msg},function(data){
+            var num = parseInt(Math.random()*10);
+            //将要发的信息ajax提交到php页面
+//            var obj = eval('('+data+')');
+
+            console.log(num);
+
+            var obj = { "result": 100, "response":["我的系统在升级,现在还不能用哦~","你好啊","今天天气真好啊","这里是上海市啊","我是新疆人啊","这里是数据平台","下午有团建活动","科比布莱恩特"], "id": 13185569, "msg": "OK." };
+                     //php段请求接口，返回来json数据 obj.response是小黄鸡回复的
             if(obj.result != 100){
                 alert('运行错误');
             }else{
-                simsimi = '<div class="right"><div class="pic"><img src="./sim.png" width="40" height="40" /></div><div class="msg">小黄鸡：'+obj.response+'</div></div>';
+                simsimi = '<div class="right"><div class="pic"><img src="/Public/灯泡.ico" width="40" height="40" /></div><div class="msg">范冰冰：'+obj.response[num]+'</div></div>';
                 d.append(simsimi);
             }
         })
