@@ -13,6 +13,7 @@ class Echarts360Controller extends Controller
     public function index()
     {
         #你好啊
+        $this->ajaxReturn("fdsffs");
     }
 
     public function autotalk()
